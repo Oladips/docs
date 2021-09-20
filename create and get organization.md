@@ -1,7 +1,7 @@
 # Create an Organization
 This is a request endpoint that creates an organizaion or workspace. It requires the creators email which will need to be a valid email
 
-## AUTHORIZATIONS: 'cookieAuth' or 'bearerAuth'
+AUTHORIZATIONS: 'cookieAuth' or 'bearerAuth'
 
 ##  End-point
 <details>
