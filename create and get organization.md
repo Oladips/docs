@@ -1,7 +1,7 @@
 # Create an Organization
 This is a request endpoint that creates an organizaion or workspace. It requires the creators email which will need to be a valid email
 
-AUTHORIZATIONS: 'cookieAuth' or 'bearerAuth'
+## AUTHORIZATIONS: `cookieAuth` or `bearerAuth`
 
 ##  End-point
 <details>
@@ -10,8 +10,10 @@ AUTHORIZATIONS: 'cookieAuth' or 'bearerAuth'
 Zuri Chat Core API:
 https://api.zuri.chat/organizations
 </details>
+
+
 | **REQUEST BODY SCHEMA:** | application/json |
-| ----------- | ------------ |
+| ----------- | ----------- |
 | creator_email| string|
 
 
@@ -51,7 +53,7 @@ For 4xx and 5xx the integer code error and string message will be displayed.
 # Get an organization using the Organizarion Id
 This is a request endpoint that gets an organizaion or workspace detail. It requires the organization id which was generated when the organization was created.
 
-## AUTHORIZATIONS: 'cookieAuth' or 'bearerAuth'
+## AUTHORIZATIONS: `cookieAuth` or `bearerAuth`
 
 ### End-point
 <details>
@@ -61,11 +63,13 @@ Zuri Chat Core API:
 https://api.zuri.chat/organizations/{organization_id}
 
 </details>
+
+
 | **PATH PARAMETER:** | application/json |
 | ----------- | ------------ |
 | organization_id required| string|
 | Example :| 6137d69b21d3c78fc9a84bdf |
-| | |
+|  |  |
 
 ### REQUEST SAMPLE
 How requests are made
