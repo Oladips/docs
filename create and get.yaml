@@ -1,0 +1,421 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Zuri Chat Core API (Organization Endpoints)
+  description: Zuri Chat is an open source slack clone. However, it offers a lot more functionality via a plugin system where each room can be provided by a different plugin provider.
+  contact:
+    email: developer@zuri.chat
+servers:
+  - description: Zuri Chat Core API 
+    url: "https://api.zuri.chat/"
+
+paths:
+  /organizations:
+    post:
+      tags:
+        - Organization
+      summary: Create an organization
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        $ref: "#/components/requestBodies/orgCreateRequestBody"
+
+      responses:
+        "201":
+          $ref: "#/components/responses/resourceCreated"
+
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /organizations/{organization_id}:
+    get:
+      tags:
+        - Organization
+      summary: Get an organization
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - $ref: "#/components/parameters/organization_id"
+      responses:
+        "200":
+          $ref: "#/components/responses/getOrgResponse"
+
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    
+
+  
+
+components:
+  parameters:
+    member_id:
+      in: path
+      name: member_id
+      required: true
+      schema:
+        type: string
+        example: "6137d69b21d3c78fc9a84bdf"
+
+    organization_id:
+      in: path
+      name: organization_id
+      required: true
+      schema:
+        type: string
+        example: "6137d69b21d3c78fc9a84bdf"
+    
+    first_name:
+      in: path
+      name: first_name
+      required: true
+      schema:
+        type: string
+        example: Jane
+
+    last_name:
+      in: path
+      name: last_name
+      required: true
+      schema:
+        type: string
+        example: Doe
+
+    email:
+      in: path
+      name: email
+      required: true
+      schema:
+        type: string
+        example: janedoe@email.com
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 401
+              message:
+                type: string
+
+    InternalServerError:
+      description: Internal server error occured during operation
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 500
+              message:
+                type: string
+
+    BadRequest:
+      description: Bad Request, e.g wrong user id
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 400
+              message:
+                type: string
+
+    resourceCreated:
+      description: Successfully created the resource
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 201
+              message:
+                type: string
+              data:
+                type: object
+                example: { "InsertedID": "6137d69b21d3c78fc9a84bdf" }
+
+    resourceDeleted:
+      description: Successfully deleted the resource
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              message:
+                type: string
+                example: "resource deleted successfully"
+
+    resourceUpdated:
+      description: Successfully updated the resource
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              message:
+                type: string
+                example: "resource updated successfully"
+
+    getOrgResponse:
+      description: Successfully retrieve the resource
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              message:
+                type: string
+              data:
+                $ref: "#/components/schemas/Organization"
+
+    getOrgsResponse:
+      description: Successfully returned list of organizations, including an empty array if there are no organizations
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Organization"
+
+    getMemberResponse:
+      description: Successfully returned record of a member in an organization
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              message:
+                type: string
+              data:
+                $ref: "#/components/schemas/Member"
+
+    getMembersResponse:
+      description: Successfully returned list of members in an organization, including an empty array if there are no members
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Member"
+
+    getPluginsResponse:
+      description: Successfully returned list of plugins from an organization, including an empty array if there are no plugins
+      content:
+        application/json:
+          schema:
+            required:
+              - code
+              - message
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 200
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Plugin"
+
+  requestBodies:
+    orgCreateRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/OrgCreateRB"
+
+  schemas:
+    Member:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "6137d69b21d3c78fc9a84bdf"
+        orgId:
+          type: string
+          example: "6137d69b21d3c78fc9a84bdf"
+        files:
+          type: object
+        image_url:
+          type: string
+          example: "https://image.location/image.png"
+        name:
+          type: string
+        status:
+          type: string
+        email:
+          type: string
+          format: email
+        display_name:
+          type: string
+        bio:
+          type: string
+        pronouns:
+          type: string
+        phone:
+          type: string
+        time_zone:
+          type: string
+        joined_at:
+          type: string
+          format: date
+
+    Organization:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "6137d69b21d3c78fc9a84bdf"
+        name:
+          type: string
+          example: "HNG"
+        creator_email:
+          type: string
+          example: "hng@email.com"
+        creator_id:
+          type: string
+          example: "6137d69b21d3c78fc9a84bdf"
+        logo_url:
+          type: string
+          example: "hng.zuri.chat"
+        created_at:
+          type: string
+          format: date
+        deleted_at:
+          type: string
+          format: date
+        organization_settings:
+          type: string
+          example:
+            {
+              "global_settings":
+                {
+                  "allow_user_add_plugins": true,
+                  "allow_only_admin_invite": true,
+                },
+              "plugin_settings":
+                { "chess_plugin": { "allow_in_every_channel": false } },
+            }
+
+    OrgCreateRB:
+      description: The structure for the create organization request
+      type: object
+      properties:
+        creator_email:
+          type: string
+          description: Email of the owner of the organization
+          example: "hng@email.com"
+
+    Plugin:
+      type: object
+      properties:
+        plugin_id:
+          type: string
+          example: "6137d69b21d3c78fc9a84bdf"
+        user_id:
+          type: string
+          example: "6137d69b21d3c78fc9a84bdf"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    cookieAuth:         
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
